@@ -1,0 +1,28 @@
+#caf table{
+    border: 2px solid black;
+    background-color: grey;
+}
+
+#caf table tr td{
+    width:  48px;
+    height: 48px;
+    border: 2px solid darkgray;
+}
+
+#caf table tr td.blue{
+    border: 2px solid darkgreen;
+    background-image: url("images/b48.png");
+}
+#caf table tr td.blueHalt{
+    border: 2px solid darkred;
+    background-image: url("images/b48.png");
+}
+
+#caf table tr td.red{
+    border: 2px solid darkgreen;
+    background-image: url("images/r48.png");
+}
+#caf table tr td.redHalt{
+    border: 2px solid darkred;
+    background-image: url("images/r48.png");
+}
