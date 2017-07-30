@@ -3,14 +3,22 @@
     <head>
         <meta charset="UTF-8">
         <Title>Клеточный автомат</Title>
-        <!--<script src="jquery-3.2.1.js"></script>-->
+        <script src="jquery-3.2.1.js"></script>
         <link href="styles.css" rel="stylesheet" >
     </head>
     <body>
-        <input id="Tick" type="button" value="Tick">
-        <p>
-        <div id="caf"></div>
-        <script src="script.js"></script>
+        <form name ="form">
+            Поле:
+            <input id="Set_X" title="Число клеток по вертикали" value="10" size="3"> x <input id="Set_Y" type="text" title="Число клеток по горизонтали" value="10" size="3">  Количество машин: <input id="Car_N" value="12" size="3"><br>
+            Приоритет:<br>
+            <input name="Prior" type="radio" value="Red" checked=""> Красные<br>
+            <input name="Prior" type="radio" value="Blue"> Синие<br>
+            <input name="Prior" type="radio" value="Ver"> Вероятностный <input id="verPrior" title="Вероятность приоритета красных" value="0.5" size="3">
+            <br><input id="Submit_Par" type="button" value="Подтвердить"> <input type="reset" value="Сбросить">
+            <p><input id="Tick" type="button" value="Шаг">
+            <p>
+            <div id="caf"></div>
+            <script src="script.js"></script>
+        </form>
     </body>
 </html>
-
