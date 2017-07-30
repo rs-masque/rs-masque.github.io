@@ -85,12 +85,12 @@ function moveCars(grid) {
                     grid[i][0] = 5;
                     grid[i][j] = 0;
                 }
-                else if (j == grid[0].length - 1 && isSafe(grid, i, 0) && (isSafe(grid, i + 1, 0) || isBlue(grid, i+1,0))) {
-                    grid[i][0] = 5;
-                    grid[i][j] = 0;
-                }
                 else if (i == grid.length - 1 && isSafe(grid, i, j + 1) && (isSafe(grid, 0, j + 1) || isBlue(grid, 0, j+1))) {
                     grid[i][j + 1] = 1;
+                    grid[i][j] = 0;
+                }
+                else if (j == grid[0].length - 1 && isSafe(grid, i, 0) && (isSafe(grid, i + 1, 0) || isBlue(grid, i+1,0))) {
+                    grid[i][0] = 5;
                     grid[i][j] = 0;
                 }
                 else if (i < grid.length - 1 && j < grid[0].length - 1 && isSafe(grid, i, j + 1) && (isSafe(grid, i + 1, j + 1) || isBlue(grid, i+1,j+1))) {
