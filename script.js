@@ -79,7 +79,7 @@ function moveCars(grid) {
         }
     }
     for (var i = 0; i < grid.length; i++) {
-        for (var j = grid[0].length; j >= 0; j--) {
+        for (var j = grid[0].length - 1; j >= 0; j--) {
             if (grid[i][j] == 1 || grid[i][j] == 3) {
                 if (i == grid.length-1 && j == grid[0].length -1 && isSafe(grid, i, 0) && (isSafe(grid, 0, 0)|| isBlue(grid,0,0))){
                     grid[i][0] = 5;
