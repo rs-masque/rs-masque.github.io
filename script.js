@@ -57,7 +57,11 @@ function isBlue(grid,a,b) {
     return (grid[a][b] % 2);
 }
 
-function moveCars(grid) {
+function isRed(grid,a,b) {
+    return (!(grid[a][b] % 2));
+}
+
+function moveCarsRed(grid) {
     for (var j = 0; j < grid[0].length; j++) {
         for (var i = 0; i < grid.length; i++) {
             if (grid[i][j] == 2 || grid[i][j] == 4) {
@@ -102,27 +106,89 @@ function moveCars(grid) {
                 }
             }
             else if (grid[i][j] == 5){
-                    grid[i][j] = 1
+                grid[i][j] = 1
             }
         }
     }
     return grid;
 }
 
-var x, y, prior, car_N;
+function moveCarsBlue(grid) {
+    for (var i = 0; i < grid.length; i++) {
+        for (var j = grid[0].length - 1; j >= 0; j--) {
+            if (grid[i][j] == 1 || grid[i][j] == 3) {
+                if (j == grid[0].length - 1 && isSafe(grid, i, 0)) {
+                    grid[i][0] = 5;
+                    grid[i][j] = 0;
+                }
+                else if (j < grid[0].length - 1 && isSafe(grid, i, j + 1)) {
+                    grid[i][j + 1] = 1;
+                    grid[i][j] = 0;
+                }
+                else {
+                    grid[i][j] = 3
+                }
+            }
+            else if (grid[i][j] == 5) {
+                grid[i][j] = 1
+            }
+        }
+    }
+    for (var j = 0; j < grid[0].length; j++) {
+        for (var i = 0; i < grid.length; i++) {
+            if (grid[i][j] == 2 || grid[i][j] == 4) {
+                if (i == 0 && j == 0 && isSafe(grid, grid.length - 1, 0) && (isSafe(grid, grid.length - 1, grid[0].length - 1) || isRed(grid, grid.length - 1, grid[0].length - 1))){
+                    grid[grid.length - 1][j] = 6;
+                    grid[i][j] = 0;
+                }
+                else if (i != 0 && j == 0 && isSafe(grid, i - 1, j) && (isSafe(grid, i - 1, grid[0].length - 1) || isRed(grid, i - 1, grid[0].length - 1))) {
+                    grid[i - 1][j] = 2;
+                    grid[i][j] = 0;
+                }
+                else if (i == 0 && isSafe(grid, grid.length - 1, j) && (isSafe(grid, grid.length - 1, j - 1) || isRed(grid, grid.length - 1, j - 1))) {
+                    grid[grid.length - 1][j] = 6;
+                    grid[i][j] = 0;
+                }
+                else if (i > 0 && j > 0 && isSafe(grid, i - 1, j) && (isSafe(grid, i - 1, j - 1) || isRed(grid, i - 1, j -1))) {
+                    grid[i - 1][j] = 2;
+                    grid[i][j] = 0;
+                }
+                else {
+                    grid[i][j] = 4
+                }
+            }
+            else if (grid[i][j] == 6){
+                grid[i][j] = 2
+            }
+        }
+    }
+    return grid;
+}
+
+var x, y, prior, verPrior, car_N;
 var grid;
 
 document.getElementById('Submit_Par').onclick = function() {
     x = parseInt($('#Set_X').val());
     y = parseInt($('#Set_Y').val());
     car_N = parseInt($('#Car_N').val());
-    prior = parseFloat($('#verPrior'));
+    verPrior = parseFloat($('#verPrior').val());
     grid = randGrid(makeGrid(x,y), car_N);
     drawGrid(x,y);
     showCars(grid);
 }
 
 document.getElementById('Tick').onclick = function() {
-    grid = moveCars(grid);
-    showCars(grid);
+    prior = $('input[name=Prior]:checked').val()
+    if (prior == "Red") {
+        grid = moveCarsRed(grid);
+        showCars(grid);
+    }
+    else if (prior == "Blue"){
+        grid = moveCarsBlue(grid);
+        showCars(grid);
+    }
+    else{
+
+    }
 }
