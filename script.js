@@ -56,7 +56,6 @@ function isSafe(grid,a,b) {
 function isBlue(grid,a,b) {
     return (grid[a][b] % 2);
 }
-
 function isRed(grid,a,b) {
     return (!(grid[a][b] % 2));
 }
@@ -165,8 +164,33 @@ function moveCarsBlue(grid) {
     return grid;
 }
 
+function varCar(verPrior) {
+    return (Math.random() < verPrior)?1:0;
+}
+
+function moveCarsVar(grid) {
+
+}
+
 var x, y, prior, verPrior, car_N;
 var grid;
+var timer = -1;
+
+function oneStep() {
+    prior = $('input[name=Prior]:checked').val()
+    if (prior == "Red") {
+        grid = moveCarsRed(grid);
+        showCars(grid);
+    }
+    else if (prior == "Blue"){
+        grid = moveCarsBlue(grid);
+        showCars(grid);
+    }
+    else {
+        grid = moveCarsVar(grid);
+        showCars(grid);
+    }
+}
 
 document.getElementById('Submit_Par').onclick = function() {
     x = parseInt($('#Set_X').val());
@@ -179,16 +203,15 @@ document.getElementById('Submit_Par').onclick = function() {
 }
 
 document.getElementById('Tick').onclick = function() {
-    prior = $('input[name=Prior]:checked').val()
-    if (prior == "Red") {
-        grid = moveCarsRed(grid);
-        showCars(grid);
-    }
-    else if (prior == "Blue"){
-        grid = moveCarsBlue(grid);
-        showCars(grid);
+    oneStep();
+}
+
+document.getElementById('Cont').onclick = function() {
+    if (timer == -1) {
+        timer = setInterval('oneStep()', 200);
     }
     else{
-
+        clearInterval(timer);
+        timer = -1;
     }
 }
