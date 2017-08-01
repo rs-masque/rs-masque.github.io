@@ -308,7 +308,7 @@ function moveCarsBlue(grid) {
 }
 
 function verCar(verPrior) {
-    return (Math.random() <= verPrior) ? 1 : 0;
+    return (Math.random() <= verPrior) ? 0 : 1;
 }
 
 function moveCarsVer(grid) {
