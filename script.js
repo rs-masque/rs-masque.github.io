@@ -24,7 +24,7 @@ function drawGrid(x, y) {
     for (var i = 0; i < x; i++) {
         hT += "<tr>";
         for (var j = 0; j < y; j++) {
-            hT += "<td id='cell" + i + j + "'>";
+            hT += "<td id='cell" + i + '_' + j + "'>";
             hT += "</td>";
         }
         hT += "</tr>";
@@ -34,8 +34,8 @@ function drawGrid(x, y) {
 
 function showCars(grid) {
     for (var i = 0; i < grid.length; i++) {
-        for (var j = 0; j < grid[i].length; j++) {
-            var temp = "cell" + i + j;
+        for (var j = 0; j < grid[0].length; j++) {
+            var temp = "cell" + i + "_" + j;
             if (grid[i][j] == 1)
                 document.getElementById(temp).className = "blue";
             else if (grid[i][j] == 2)
