@@ -55,13 +55,13 @@ function showCarsPR(grid) {
         for (var j = 0; j < grid[0].length; j++) {
             var temp = "cell" + i + "_" + j;
             if (grid[i][j] == 1)
-                document.getElementById(temp).className = "bluePrior";
+                document.getElementById(temp).className = "blue";
             else if (grid[i][j] == 2)
-                document.getElementById(temp).className = "red";
+                document.getElementById(temp).className = "redPrior";
             else if (grid[i][j] == 3)
-                document.getElementById(temp).className = "bluePriorHalt";
+                document.getElementById(temp).className = "blueHalt";
             else if (grid[i][j] == 4)
-                document.getElementById(temp).className = "redHalt";
+                document.getElementById(temp).className = "redHaltPrior";
             else
                 document.getElementById(temp).className = "";
         }
@@ -73,13 +73,13 @@ function showCarsPB(grid) {
         for (var j = 0; j < grid[0].length; j++) {
             var temp = "cell" + i + "_" + j;
             if (grid[i][j] == 1)
-                document.getElementById(temp).className = "blue";
+                document.getElementById(temp).className = "bluePrior";
             else if (grid[i][j] == 2)
-                document.getElementById(temp).className = "redPrior";
+                document.getElementById(temp).className = "red";
             else if (grid[i][j] == 3)
-                document.getElementById(temp).className = "blueHalt";
+                document.getElementById(temp).className = "blueHaltPrior";
             else if (grid[i][j] == 4)
-                document.getElementById(temp).className = "redPriorHalt";
+                document.getElementById(temp).className = "redHalt";
             else
                 document.getElementById(temp).className = "";
         }
@@ -308,7 +308,7 @@ function moveCarsBlue(grid) {
 }
 
 function verCar(verPrior) {
-    return (Math.random() <= verPrior) ? 0 : 1;
+    return (Math.random() <= verPrior) ? 1 : 0;
 }
 
 function moveCarsVer(grid) {
