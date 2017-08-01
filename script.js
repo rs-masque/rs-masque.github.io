@@ -61,7 +61,7 @@ function showCarsPR(grid) {
             else if (grid[i][j] == 3)
                 document.getElementById(temp).className = "blueHalt";
             else if (grid[i][j] == 4)
-                document.getElementById(temp).className = "redHaltPrior";
+                document.getElementById(temp).className = "redPriorHalt";
             else
                 document.getElementById(temp).className = "";
         }
@@ -77,7 +77,7 @@ function showCarsPB(grid) {
             else if (grid[i][j] == 2)
                 document.getElementById(temp).className = "red";
             else if (grid[i][j] == 3)
-                document.getElementById(temp).className = "blueHaltPrior";
+                document.getElementById(temp).className = "bluePriorHalt";
             else if (grid[i][j] == 4)
                 document.getElementById(temp).className = "redHalt";
             else
