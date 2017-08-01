@@ -17,7 +17,14 @@
     border: 2px solid darkred;
     background-image: url("images/b48.png");
 }
-
+#caf table tr td.bluePrior {
+    border: 2px solid darkgreen;
+    background-image: url("images/m-b48.png");
+}
+#caf table tr td.bluePriorHalt {
+    border: 2px solid darkred;
+    background-image: url("images/m-b48.png");
+}
 #caf table tr td.red{
     border: 2px solid darkgreen;
     background-image: url("images/r48.png");
@@ -25,4 +32,12 @@
 #caf table tr td.redHalt{
     border: 2px solid darkred;
     background-image: url("images/r48.png");
+}
+#caf table tr td.redPrior {
+    border: 2px solid darkgreen;
+    background-image: url("images/m-r48.png");
+}
+#caf table tr td.redPriorHalt {
+    border: 2px solid darkred;
+    background-image: url("images/m-r48.png");
 }

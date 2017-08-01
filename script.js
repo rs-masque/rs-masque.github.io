@@ -50,6 +50,42 @@ function showCars(grid) {
     }
 }
 
+function showCarsPR(grid) {
+    for (var i = 0; i < grid.length; i++) {
+        for (var j = 0; j < grid[0].length; j++) {
+            var temp = "cell" + i + "_" + j;
+            if (grid[i][j] == 1)
+                document.getElementById(temp).className = "bluePrior";
+            else if (grid[i][j] == 2)
+                document.getElementById(temp).className = "red";
+            else if (grid[i][j] == 3)
+                document.getElementById(temp).className = "bluePriorHalt";
+            else if (grid[i][j] == 4)
+                document.getElementById(temp).className = "redHalt";
+            else
+                document.getElementById(temp).className = "";
+        }
+    }
+}
+
+function showCarsPB(grid) {
+    for (var i = 0; i < grid.length; i++) {
+        for (var j = 0; j < grid[0].length; j++) {
+            var temp = "cell" + i + "_" + j;
+            if (grid[i][j] == 1)
+                document.getElementById(temp).className = "blue";
+            else if (grid[i][j] == 2)
+                document.getElementById(temp).className = "redPrior";
+            else if (grid[i][j] == 3)
+                document.getElementById(temp).className = "blueHalt";
+            else if (grid[i][j] == 4)
+                document.getElementById(temp).className = "redPriorHalt";
+            else
+                document.getElementById(temp).className = "";
+        }
+    }
+}
+
 function isSafe(grid, a, b) {
     return (grid[a][b] == 0);
 }
@@ -275,31 +311,21 @@ function verCar(verPrior) {
     return (Math.random() <= verPrior) ? 1 : 0;
 }
 
-function moveCar(grid, i1, j1, i2, j2) {
-    if (verCar(verPrior)) {
-        grid[i1 - 1][j1] = grid[i1][j1];
-        grid[i1][j1] = 0;
+function moveCarsVer(grid) {
+    if (verCar(verPrior)){
+        grid = moveCarsRed(grid);
+        showCarsPR(grid);
     }
     else {
-        grid[i2][j2 + 1] = grid[i2][j2];
-        grid[i2][j2] = 0;
+        grid = moveCarsBlue(grid);
+        showCarsPB(grid);
     }
+    return grid;
 }
-
-function moveCarsVer(grid) {
-    for (var i = 0; i < grid.length; i++) {
-        for (var j = 0; j < grid[0].length; j++) {
-///////////////////////////////////////////////////
-        }
-    }
-}
-
-var x, y, prior, verPrior, car_N;
-var grid;
-var timer = -1;
 
 function oneStep() {
     prior = $('input[name=Prior]:checked').val()
+    verPrior = parseFloat($('#verPrior').val());
     if (prior == "Red") {
         grid = moveCarsRed(grid);
         showCars(grid);
@@ -310,9 +336,12 @@ function oneStep() {
     }
     else {
         grid = moveCarsVer(grid);
-        showCars(grid);
     }
 }
+
+var x, y, prior, verPrior, car_N;
+var grid;
+var timer = -1;
 
 document.getElementById('Submit_Par').onclick = function () {
     x = parseInt($('#Set_X').val());
@@ -323,6 +352,10 @@ document.getElementById('Submit_Par').onclick = function () {
         return;
     }
     verPrior = parseFloat($('#verPrior').val());
+    if (verPrior > 1){
+        alert("Вероятность не может быть больше 1.");
+        return;
+    }
     grid = randGrid(makeGrid(x, y), car_N);
     drawGrid(x, y);
     showCars(grid);
