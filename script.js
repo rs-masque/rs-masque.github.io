@@ -318,6 +318,10 @@ document.getElementById('Submit_Par').onclick = function () {
     x = parseInt($('#Set_X').val());
     y = parseInt($('#Set_Y').val());
     car_N = parseInt($('#Car_N').val());
+    if (x*y<car_N) {
+        alert("Количество машин больше количества клеток поля.");
+        return;
+    }
     verPrior = parseFloat($('#verPrior').val());
     grid = randGrid(makeGrid(x, y), car_N);
     drawGrid(x, y);
