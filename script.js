@@ -271,12 +271,12 @@ function moveCarsBlue(grid) {
     return grid;
 }
 
-function varCar(verPrior) {
+function verCar(verPrior) {
     return (Math.random() <= verPrior) ? 1 : 0;
 }
 
 function moveCar(grid, i1, j1, i2, j2) {
-    if (varCar(verPrior)) {
+    if (verCar(verPrior)) {
         grid[i1 - 1][j1] = grid[i1][j1];
         grid[i1][j1] = 0;
     }
@@ -329,8 +329,9 @@ document.getElementById('Tick').onclick = function () {
 }
 
 document.getElementById('Cont').onclick = function () {
+    var timeStep = parseInt($('#timeStep').val());
     if (timer == -1) {
-        timer = setInterval('oneStep()', 150);
+        timer = setInterval('oneStep()', timeStep);
     }
     else {
         clearInterval(timer);
