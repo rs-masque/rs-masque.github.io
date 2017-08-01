@@ -24,12 +24,22 @@ function drawGrid(x, y) {
     for (var i = 0; i < x; i++) {
         hT += "<tr>";
         for (var j = 0; j < y; j++) {
-            hT += "<td id='cell" + i + '_' + j + "'>";
+            hT += "<td id='cell" + i + '_' + j + "'onclick='CellClick("+i+","+j+");'>";
             hT += "</td>";
         }
         hT += "</tr>";
     }
     document.getElementById("caf").innerHTML = hT + "</table>";
+}
+
+function CellClick(a,b) {
+    a = parseInt(a);
+    b = parseInt(b);
+    grid[a][b]++;
+    if (grid[a][b] >= 3){
+        grid[a][b] = 0;
+    }
+    showCars(grid);
 }
 
 function showCars(grid) {
