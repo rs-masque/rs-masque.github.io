@@ -69,6 +69,8 @@ function moveCarsRed(grid) {
             if (!grid[emptyCell][j])
                 break;
         }
+        if (emptyCell == -1)
+            emptyCell = 0;
         for (var i = emptyCell; i < grid.length; i++) {
             if (grid[i][j] == 2 || grid[i][j] == 4) {
                 if (i == 0 && isSafe(grid, grid.length - 1, j)) {
@@ -105,10 +107,12 @@ function moveCarsRed(grid) {
     }
     for (var i = 0; i < grid.length; i++) {
         var emptyCell = 0;
-        for (; emptyCell < grid.length; emptyCell++) {
+        for (; emptyCell < grid[0].length; emptyCell++) {
             if (!grid[i][emptyCell])
                 break;
         }
+        if (emptyCell == grid[0].length)
+            emptyCell = grid[0].length - 1;
         for (var j = emptyCell; j >= 0; j--) {
             if (grid[i][j] == 1 || grid[i][j] == 3) {
                 if (i == grid.length - 1 && j == grid[0].length - 1 && isSafe(grid, i, 0) && (isSafe(grid, 0, 0) || isBlue(grid, 0, 0))) {
@@ -165,10 +169,12 @@ function moveCarsRed(grid) {
 function moveCarsBlue(grid) {
     for (var i = 0; i < grid.length; i++) {
         var emptyCell = 0;
-        for (; emptyCell < grid.length; emptyCell++) {
+        for (; emptyCell < grid[0].length; emptyCell++) {
             if (!grid[i][emptyCell])
                 break;
         }
+        if (emptyCell == grid[0].length)
+            emptyCell = grid[0].length - 1;
         for (var j = emptyCell; j >= 0; j--) {
             if (grid[i][j] == 1 || grid[i][j] == 3) {
                 if (j == grid[0].length - 1 && isSafe(grid, i, 0)) {
@@ -204,11 +210,14 @@ function moveCarsBlue(grid) {
         }
     }
     for (var j = 0; j < grid[0].length; j++) {
+
         var emptyCell = grid.length - 1;
         for (; emptyCell >=0; emptyCell--) {
             if (!grid[emptyCell][j])
                 break;
         }
+        if (emptyCell == -1)
+            emptyCell = 0;
         for (var i = emptyCell; i < grid.length; i++) {
             if (grid[i][j] == 2 || grid[i][j] == 4) {
                 if (i == 0 && j == 0 && isSafe(grid, grid.length - 1, 0) && (isSafe(grid, grid.length - 1, grid[0].length - 1) || isRed(grid, grid.length - 1, grid[0].length - 1))) {
