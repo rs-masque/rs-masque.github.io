@@ -54,6 +54,11 @@ function showCars(grid) {
                 document.getElementById(temp).className = "blueHalt";
             else if (grid[i][j] == 4)
                 document.getElementById(temp).className = "redHalt";
+            else if (grid[i][j] == 7)
+                document.getElementById(temp).className = "bluePriorHalt";
+            else if (grid[i][j] == 8)
+                document.getElementById(temp).className = "redPriorHalt";
+
             else
                 document.getElementById(temp).className = "";
         }
@@ -333,7 +338,99 @@ function verCar(verPrior) {
 //     return grid;
 // }
 
+function moveFree(grid) {
+    for (var i = 0; i < grid.length; i++) {
+        var emptyCell = 0;
+        for (; emptyCell < grid[0].length; emptyCell++) {
+            if (!grid[i][emptyCell])
+                break;
+        }
+        if (emptyCell == grid[0].length)
+            emptyCell = grid[0].length - 1;
+        for (var j = emptyCell; j >= 0; j--) {
+            if (grid[i][j] == 1) {
+                if (j == grid[0].length - 1 && isSafe(grid, i, 0)) {
+                    grid[i][0] = 3;
+                    grid[i][j] = 0;
+                }
+                else if (j < grid[0].length - 1 && isSafe(grid, i, j + 1)) {
+                    grid[i][j + 1] = 3;
+                    grid[i][j] = 0;
+                }
+                else {
+                    grid[i][j] = 1
+                }
+            }
+        }
+        for (var j = grid[0].length - 1; j > emptyCell; j--) {
+            if (grid[i][j] == 1) {
+                if (j == grid[0].length - 1 && isSafe(grid, i, 0)) {
+                    grid[i][0] = 3;
+                    grid[i][j] = 0;
+                }
+                else if (j < grid[0].length - 1 && isSafe(grid, i, j + 1)) {
+                    grid[i][j + 1] = 3;
+                    grid[i][j] = 0;
+                }
+                else {
+                    grid[i][j] = 1;
+                }
+            }
+        }
+    }
+    for (var j = 0; j < grid[0].length; j++) {
+        var emptyCell = grid.length - 1;
+        for (; emptyCell >= 0; emptyCell--) {
+            if (!grid[emptyCell][j])
+                break;
+        }
+        if (emptyCell == -1)
+            emptyCell = 0;
+        for (var i = emptyCell; i < grid.length; i++) {
+            if (grid[i][j] == 2) {
+                if (i == 0 && isSafe(grid, grid.length - 1, j)) {
+                    grid[grid.length - 1][j] = 4;
+                    grid[i][j] = 0;
+                }
+                else if (i > 0 && isSafe(grid, i - 1, j)) {
+                    grid[i - 1][j] = 4;
+                    grid[i][j] = 0;
+                }
+                else {
+                    grid[i][j] = 2;
+                }
+            }
+        }
+        for (var i = 0; i < emptyCell; i++) {
+            if (grid[i][j] == 2) {
+                if (i == 0 && isSafe(grid, grid.length - 1, j)) {
+                    grid[grid.length - 1][j] = 4;
+                    grid[i][j] = 0;
+                }
+                else if (i > 0 && isSafe(grid, i - 1, j)) {
+                    grid[i - 1][j] = 4;
+                    grid[i][j] = 0;
+                }
+                else {
+                    grid[i][j] = 2
+                }
+            }
+        }
+    }
+    return grid;
+}
+
 function moveCarsVer(grid) {
+    for (var i = 0; i < grid.length; i++){
+        for (var j = 0; j < grid[0].length; j++ ) {
+            if (grid[i][j] == 3 || grid[i][j] == 7){
+                grid[i][j] = 1;
+            }
+            else if (grid[i][j] == 4 || grid[i][j] == 8){
+                grid[i][j] = 2;
+            }
+        }
+    }
     // Ищем конфликты. Стопорим все.
     for (var i = 0; i < grid.length; i++) {
         for (var j = 0; j < grid[0].length; j++){
@@ -364,124 +461,47 @@ function moveCarsVer(grid) {
         }
     }
     // Двигаем всё, что движется, помечаем, что подвинули.
-    for (var i = 0; i < grid.length; i++) {
-        var emptyCell = 0;
-        for (; emptyCell < grid[0].length; emptyCell++) {
-            if (!grid[i][emptyCell])
-                break;
-        }
-        if (emptyCell == grid[0].length)
-            emptyCell = grid[0].length - 1;
-        for (var j = emptyCell; j >= 0; j--) {
-            if (grid[i][j] == 1 || grid[i][j] == 3) {
-                if (j == grid[0].length - 1 && isSafe(grid, i, 0)) {
-                    grid[i][0] = 5;
-                    grid[i][j] = 0;
-                }
-                else if (j < grid[0].length - 1 && isSafe(grid, i, j + 1)) {
-                    grid[i][j + 1] = 5;
-                    grid[i][j] = 0;
-                }
-                else {
-                    grid[i][j] = 3
-                }
-            }
-        }
-        for (var j = grid[0].length - 1; j > emptyCell; j--) {
-            if (grid[i][j] == 1  || grid[i][j] == 3) {
-                if (j == grid[0].length - 1 && isSafe(grid, i, 0)) {
-                    grid[i][0] = 5;
-                    grid[i][j] = 0;
-                }
-                else if (j < grid[0].length - 1 && isSafe(grid, i, j + 1)) {
-                    grid[i][j + 1] = 5;
-                    grid[i][j] = 0;
-                }
-                else {
-                    grid[i][j] = 3
-                }
-            }
-        }
-    }
-    for (var j = 0; j < grid[0].length; j++) {
-        var emptyCell = grid.length - 1;
-        for (; emptyCell >= 0; emptyCell--) {
-            if (!grid[emptyCell][j])
-                break;
-        }
-        if (emptyCell == -1)
-            emptyCell = 0;
-        for (var i = emptyCell; i < grid.length; i++) {
-            if (grid[i][j] == 2 || grid[i][j] == 4) {
-                if (i == 0 && isSafe(grid, grid.length - 1, j)) {
-                    grid[grid.length - 1][j] = 6;
-                    grid[i][j] = 0;
-                }
-                else if (i > 0 && isSafe(grid, i - 1, j)) {
-                    grid[i - 1][j] = 6;
-                    grid[i][j] = 0;
-                }
-                else {
-                    grid[i][j] = 4
-                }
-            }
-        }
-        for (var i = 0; i < emptyCell; i++) {
-            if (grid[i][j] == 2 || grid[i][j] == 4) {
-                if (i == 0 && isSafe(grid, grid.length - 1, j)) {
-                    grid[grid.length - 1][j] = 6;
-                    grid[i][j] = 0;
-                }
-                else if (i > 0 && isSafe(grid, i - 1, j)) {
-                    grid[i - 1][j] = 6;
-                    grid[i][j] = 0;
-                }
-                else {
-                    grid[i][j] = 4
-                }
-            }
-        }
-    }
+    grid = moveFree(grid);
     // Разрешаем конфликты. Снимаем метки с тех, что выиграли.
     for (var i = 0; i < grid.length; i++){
         for (var j = grid[0].length; j >= 0; j--) {
             if (i < grid.length - 1 && j < grid[0].length - 1) {
                 if (isBlue(grid, i, j) && (isRed(grid, i + 1, j + 1) && !isSafe(grid, i + 1, j + 1))) {
                     if (verCar(verPrior)) {
-                        grid[i + 1][j + 1] = 4;
+                        grid[i + 1][j + 1] = 2;
                     }
                     else {
-                        grid[i][j] = 3;
+                        grid[i][j] = 1;
                     }
                 }
             }
             else if (i == grid.length - 1 && j == grid[0].length - 1) {
                 if (isBlue(grid, i, j) && (isRed(grid, 0, 0) && !isSafe(grid, 0, 0))) {
                     if (verCar(verPrior)) {
-                        grid[0][0] = 4;
+                        grid[0][0] = 2;
                     }
                     else {
-                        grid[i][j] = 3;
+                        grid[i][j] = 1;
                     }
                 }
             }
             else if (i == grid.length - 1) {
                 if (isBlue(grid, i, j) && (isRed(grid, 0, j + 1) && !isSafe(grid, 0, j + 1))) {
                     if (verCar(verPrior)) {
-                        grid[0][j + 1] = 4;
+                        grid[0][j + 1] = 2;
                     }
                     else {
-                        grid[i][j] = 3;
+                        grid[i][j] = 1;
                     }
                 }
             }
             else if (j == grid.length - 1) {
                 if (isBlue(grid, i, j) && (isRed(grid, i + 1, 0) && !isSafe(grid, i + 1, 0))) {
                     if (verCar(verPrior)) {
-                        grid[i + 1][0] = 4;
+                        grid[i + 1][0] = 2;
                     }
                     else {
-                        grid[i][j] = 3;
+                        grid[i][j] = 1;
                     }
                 }
             }
@@ -489,96 +509,9 @@ function moveCarsVer(grid) {
     }
     // Двигаем победителей.
     for (var i = 0; i < grid.length; i++) {
-        var emptyCell = 0;
-        for (; emptyCell < grid[0].length; emptyCell++) {
-            if (!grid[i][emptyCell])
-                break;
-        }
-        if (emptyCell == grid[0].length)
-            emptyCell = grid[0].length - 1;
-        for (var j = emptyCell; j >= 0; j--) {
-            if (grid[i][j] == 3) {
-                if (j == grid[0].length - 1 && isSafe(grid, i, 0)) {
-                    grid[i][0] = 5;
-                    grid[i][j] = 0;
-                }
-                else if (j < grid[0].length - 1 && isSafe(grid, i, j + 1)) {
-                    grid[i][j + 1] = 5;
-                    grid[i][j] = 0;
-                }
-                else {
-                    grid[i][j] = 3
-                }
-            }
-        }
-        for (var j = grid[0].length - 1; j > emptyCell; j--) {
-            if (grid[i][j] == 3) {
-                if (j == grid[0].length - 1 && isSafe(grid, i, 0)) {
-                    grid[i][0] = 5;
-                    grid[i][j] = 0;
-                }
-                else if (j < grid[0].length - 1 && isSafe(grid, i, j + 1)) {
-                    grid[i][j + 1] = 5;
-                    grid[i][j] = 0;
-                }
-                else {
-                    grid[i][j] = 3
-                }
-            }
-        }
-    }
-    for (var j = 0; j < grid[0].length; j++) {
-        var emptyCell = grid.length - 1;
-        for (; emptyCell >= 0; emptyCell--) {
-            if (!grid[emptyCell][j])
-                break;
-        }
-        if (emptyCell == -1)
-            emptyCell = 0;
-        for (var i = emptyCell; i < grid.length; i++) {
-            if (grid[i][j] == 4) {
-                if (i == 0 && isSafe(grid, grid.length - 1, j)) {
-                    grid[grid.length - 1][j] = 6;
-                    grid[i][j] = 0;
-                }
-                else if (i > 0 && isSafe(grid, i - 1, j)) {
-                    grid[i - 1][j] = 6;
-                    grid[i][j] = 0;
-                }
-                else {
-                    grid[i][j] = 4
-                }
-            }
-        }
-        for (var i = 0; i < emptyCell; i++) {
-            if (grid[i][j] == 4) {
-                if (i == 0 && isSafe(grid, grid.length - 1, j)) {
-                    grid[grid.length - 1][j] = 6;
-                    grid[i][j] = 0;
-                }
-                else if (i > 0 && isSafe(grid, i - 1, j)) {
-                    grid[i - 1][j] = 6;
-                    grid[i][j] = 0;
-                }
-                else {
-                    grid[i][j] = 4
-                }
-            }
-        }
-    }
-    for (var i = 0; i < grid.length; i++){
-        for (var j = 0; j < grid[0].length; j++ ) {
-            if (grid[i][j] == 5){
-                grid[i][j] = 1;
-            }
-            else if (grid[i][j] == 6){
-                grid[i][j] = 2;
-            }
-            else if (grid[i][j] == 7){
-                grid[i][j] = 3;
-            }
-            else if (grid[i][j] == 8){
-                grid[i][j] = 4;
+        for (var j = 0; j < grid[0].length; j++) {
+            if (grid[i][j] == 1 || grid[i][j] == 2){
+                grid = moveFree(grid);
             }
         }
     }
@@ -588,6 +521,10 @@ function moveCarsVer(grid) {
 function oneStep() {
     prior = $('input[name=Prior]:checked').val()
     verPrior = parseFloat($('#verPrior').val());
+    if (verPrior > 1){
+        alert("Вероятность не может быть больше 1.");
+        return;
+    }
     if (prior == "Red") {
         grid = moveCarsRed(grid);
         showCars(grid);
