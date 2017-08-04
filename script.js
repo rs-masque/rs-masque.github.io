@@ -32,6 +32,48 @@ function drawGrid(x, y) {
     document.getElementById("caf").innerHTML = hT + "</table>";
 }
 
+function drawXSpeed(x) {
+    var hT = "<table cellpadding='0' cellspacing='1'>";
+    for (var i = 0; i < x; i++) {
+        hT += "<tr>";
+        hT += "<td  align='center' id='Ycell" + i + "'>" + ((xsp[i]/xcon[i])?xsp[i]/xcon[i]:0).toFixed(2);
+        hT += "</td>";
+        hT += "</tr>";
+    }
+    document.getElementById("xspeed").innerHTML = hT + "</table>";
+}
+
+function drawYSpeed(y) {
+    var hT = "<table cellpadding='0' cellspacing='1'>";
+    hT += "<tr>";
+    for (var i = 0; i < y; i++) {
+        hT += "<td align='center' id='Xcell" + i + "'>" + ((ysp[i]/ycon[i])?ysp[i]/ycon[i]:0).toFixed(2);
+        hT += "</td>";
+    }
+    hT += "</tr>";
+    document.getElementById("yspeed").innerHTML = hT + "</table>";
+}
+
+function drawASpeed() {
+    var sumsp = 0;
+    var sumcon = 0;
+    for (var i = 0; i < xsp.length; i++){
+        sumsp += xsp[i];
+        sumcon += xcon[i];
+    }
+    for (var i = 0; i < ysp.length; i++){
+        sumsp += ysp[i];
+        sumcon += ycon[i];
+    }
+
+    var hT = "<table cellpadding='0' cellspacing='1'>";
+    hT += "<tr>";
+    hT += "<td align='center'>" + ((sumsp/sumcon)?sumsp/sumcon:0).toFixed(2);
+    hT += "</td>";
+    hT += "</tr>";
+    document.getElementById("aspeed").innerHTML = hT + "</table>";
+}
+
 function CellClick(a,b) {
     a = parseInt(a);
     b = parseInt(b);
@@ -46,13 +88,13 @@ function showCars(grid) {
     for (var i = 0; i < grid.length; i++) {
         for (var j = 0; j < grid[0].length; j++) {
             var temp = "cell" + i + "_" + j;
-            if (grid[i][j] == 1)
+            if (grid[i][j] == 3)
                 document.getElementById(temp).className = "blue";
-            else if (grid[i][j] == 2)
-                document.getElementById(temp).className = "red";
-            else if (grid[i][j] == 3)
-                document.getElementById(temp).className = "blueHalt";
             else if (grid[i][j] == 4)
+                document.getElementById(temp).className = "red";
+            else if (grid[i][j] == 1)
+                document.getElementById(temp).className = "blueHalt";
+            else if (grid[i][j] == 2)
                 document.getElementById(temp).className = "redHalt";
             else if (grid[i][j] == 7)
                 document.getElementById(temp).className = "bluePriorHalt";
@@ -65,41 +107,6 @@ function showCars(grid) {
     }
 }
 
-function showCarsPR(grid) {
-    for (var i = 0; i < grid.length; i++) {
-        for (var j = 0; j < grid[0].length; j++) {
-            var temp = "cell" + i + "_" + j;
-            if (grid[i][j] == 1)
-                document.getElementById(temp).className = "blue";
-            else if (grid[i][j] == 2)
-                document.getElementById(temp).className = "redPrior";
-            else if (grid[i][j] == 3)
-                document.getElementById(temp).className = "blueHalt";
-            else if (grid[i][j] == 4)
-                document.getElementById(temp).className = "redPriorHalt";
-            else
-                document.getElementById(temp).className = "";
-        }
-    }
-}
-
-function showCarsPB(grid) {
-    for (var i = 0; i < grid.length; i++) {
-        for (var j = 0; j < grid[0].length; j++) {
-            var temp = "cell" + i + "_" + j;
-            if (grid[i][j] == 1)
-                document.getElementById(temp).className = "bluePrior";
-            else if (grid[i][j] == 2)
-                document.getElementById(temp).className = "red";
-            else if (grid[i][j] == 3)
-                document.getElementById(temp).className = "bluePriorHalt";
-            else if (grid[i][j] == 4)
-                document.getElementById(temp).className = "redHalt";
-            else
-                document.getElementById(temp).className = "";
-        }
-    }
-}
 
 function isSafe(grid, a, b) {
     return (grid[a][b] == 0);
@@ -326,18 +333,6 @@ function verCar(verPrior) {
     return (Math.random() <= verPrior) ? 1 : 0;
 }
 
-// function moveCarsVer(grid) {
-//     if (verCar(verPrior)){
-//         grid = moveCarsRed(grid);
-//         showCarsPR(grid);
-//     }
-//     else {
-//         grid = moveCarsBlue(grid);
-//         showCarsPB(grid);
-//     }
-//     return grid;
-// }
-
 function moveFree(grid) {
     for (var i = 0; i < grid.length; i++) {
         var emptyCell = 0;
@@ -352,10 +347,12 @@ function moveFree(grid) {
                 if (j == grid[0].length - 1 && isSafe(grid, i, 0)) {
                     grid[i][0] = 3;
                     grid[i][j] = 0;
+                    xsp[i]++;
                 }
                 else if (j < grid[0].length - 1 && isSafe(grid, i, j + 1)) {
                     grid[i][j + 1] = 3;
                     grid[i][j] = 0;
+                    xsp[i]++;
                 }
                 else {
                     grid[i][j] = 1
@@ -367,10 +364,12 @@ function moveFree(grid) {
                 if (j == grid[0].length - 1 && isSafe(grid, i, 0)) {
                     grid[i][0] = 3;
                     grid[i][j] = 0;
+                    xsp[i]++;
                 }
                 else if (j < grid[0].length - 1 && isSafe(grid, i, j + 1)) {
                     grid[i][j + 1] = 3;
                     grid[i][j] = 0;
+                    xsp[i]++;
                 }
                 else {
                     grid[i][j] = 1;
@@ -391,10 +390,12 @@ function moveFree(grid) {
                 if (i == 0 && isSafe(grid, grid.length - 1, j)) {
                     grid[grid.length - 1][j] = 4;
                     grid[i][j] = 0;
+                    ysp[j]++;
                 }
                 else if (i > 0 && isSafe(grid, i - 1, j)) {
                     grid[i - 1][j] = 4;
                     grid[i][j] = 0;
+                    ysp[j]++;
                 }
                 else {
                     grid[i][j] = 2;
@@ -406,10 +407,12 @@ function moveFree(grid) {
                 if (i == 0 && isSafe(grid, grid.length - 1, j)) {
                     grid[grid.length - 1][j] = 4;
                     grid[i][j] = 0;
+                    ysp[j]++;
                 }
                 else if (i > 0 && isSafe(grid, i - 1, j)) {
                     grid[i - 1][j] = 4;
                     grid[i][j] = 0;
+                    ysp[j]++;
                 }
                 else {
                     grid[i][j] = 2
@@ -466,7 +469,7 @@ function moveCarsVer(grid) {
     for (var i = 0; i < grid.length; i++){
         for (var j = grid[0].length; j >= 0; j--) {
             if (i < grid.length - 1 && j < grid[0].length - 1) {
-                if (isBlue(grid, i, j) && (isRed(grid, i + 1, j + 1) && !isSafe(grid, i + 1, j + 1))) {
+                if (grid[i][j] == 7){//(isBlue(grid, i, j) && (isRed(grid, i + 1, j + 1) && !isSafe(grid, i + 1, j + 1))) {
                     if (verCar(verPrior)) {
                         grid[i + 1][j + 1] = 2;
                     }
@@ -476,7 +479,7 @@ function moveCarsVer(grid) {
                 }
             }
             else if (i == grid.length - 1 && j == grid[0].length - 1) {
-                if (isBlue(grid, i, j) && (isRed(grid, 0, 0) && !isSafe(grid, 0, 0))) {
+                if (grid[i][j] == 7){//(isBlue(grid, i, j) && (isRed(grid, 0, 0) && !isSafe(grid, 0, 0))) {
                     if (verCar(verPrior)) {
                         grid[0][0] = 2;
                     }
@@ -486,7 +489,7 @@ function moveCarsVer(grid) {
                 }
             }
             else if (i == grid.length - 1) {
-                if (isBlue(grid, i, j) && (isRed(grid, 0, j + 1) && !isSafe(grid, 0, j + 1))) {
+                if (grid[i][j] == 7){//(isBlue(grid, i, j) && (isRed(grid, 0, j + 1) && !isSafe(grid, 0, j + 1))) {
                     if (verCar(verPrior)) {
                         grid[0][j + 1] = 2;
                     }
@@ -496,7 +499,7 @@ function moveCarsVer(grid) {
                 }
             }
             else if (j == grid.length - 1) {
-                if (isBlue(grid, i, j) && (isRed(grid, i + 1, 0) && !isSafe(grid, i + 1, 0))) {
+                if (grid[i][j] == 7){//(isBlue(grid, i, j) && (isRed(grid, i + 1, 0) && !isSafe(grid, i + 1, 0))) {
                     if (verCar(verPrior)) {
                         grid[i + 1][0] = 2;
                     }
@@ -507,7 +510,7 @@ function moveCarsVer(grid) {
             }
         }
     }
-    // Двигаем победителей.
+    // Двигаем победителей, пока есть необработанные.
     for (var i = 0; i < grid.length; i++) {
         for (var j = 0; j < grid[0].length; j++) {
             if (grid[i][j] == 1 || grid[i][j] == 2){
@@ -525,6 +528,20 @@ function oneStep() {
         alert("Вероятность не может быть больше 1.");
         return;
     }
+
+    for (var i = 0; i < grid.length; i++){
+        for (var j = 0; j < grid[0].length; j++){
+            if (grid[i][j]){
+                if (isBlue(grid, i, j)){
+                    xcon[i]++;
+                }
+                else if (isRed(grid, i, j)){
+                    ycon[j]++;
+                }
+            }
+        }
+    }
+
     if (prior == "Red") {
         grid = moveCarsRed(grid);
         showCars(grid);
@@ -537,11 +554,23 @@ function oneStep() {
         grid = moveCarsVer(grid);
         showCars(grid);
     }
+    drawASpeed();
+    drawXSpeed(x);
+    for (var i = 0; i < x; i++) {
+        xsp[i] = 0;
+        xcon[i] = 0;
+    }
+    drawYSpeed(y);
+    for (var i = 0; i < y; i++) {
+        ysp[i] = 0;
+        ycon[i] = 0;
+    }
 }
 
 var x, y, prior, verPrior, car_N;
 var grid;
 var timer = -1;
+var xsp, ysp, xcon, ycon;
 
 document.getElementById('Submit_Par').onclick = function () {
     x = parseInt($('#Set_X').val());
@@ -556,8 +585,27 @@ document.getElementById('Submit_Par').onclick = function () {
         alert("Вероятность не может быть больше 1.");
         return;
     }
+    xsp = new Array(x);
+    xcon = new Array(x);
+
+    for (var i = 0; i < x; i++) {
+        xsp[i] = 0;
+        xcon[i] = 0;
+    }
+    ysp = new Array(y);
+    ycon = new Array(y);
+
+    for (var i = 0; i < y; i++) {
+        ysp[i] = 0;
+        ycon[i] = 0;
+    }
+
+
     grid = randGrid(makeGrid(x, y), car_N);
     drawGrid(x, y);
+    drawXSpeed(x);
+    drawYSpeed(y);
+    drawASpeed();
     showCars(grid);
 }
 
@@ -575,3 +623,50 @@ document.getElementById('Cont').onclick = function () {
         timer = -1;
     }
 }
+
+// function moveCarsVer(grid) {
+//     if (verCar(verPrior)){
+//         grid = moveCarsRed(grid);
+//         showCarsPR(grid);
+//     }
+//     else {
+//         grid = moveCarsBlue(grid);
+//         showCarsPB(grid);
+//     }
+//     return grid;
+// }
+// function showCarsPR(grid) {
+//     for (var i = 0; i < grid.length; i++) {
+//         for (var j = 0; j < grid[0].length; j++) {
+//             var temp = "cell" + i + "_" + j;
+//             if (grid[i][j] == 1)
+//                 document.getElementById(temp).className = "blue";
+//             else if (grid[i][j] == 2)
+//                 document.getElementById(temp).className = "redPrior";
+//             else if (grid[i][j] == 3)
+//                 document.getElementById(temp).className = "blueHalt";
+//             else if (grid[i][j] == 4)
+//                 document.getElementById(temp).className = "redPriorHalt";
+//             else
+//                 document.getElementById(temp).className = "";
+//         }
+//     }
+// }
+//
+// function showCarsPB(grid) {
+//     for (var i = 0; i < grid.length; i++) {
+//         for (var j = 0; j < grid[0].length; j++) {
+//             var temp = "cell" + i + "_" + j;
+//             if (grid[i][j] == 1)
+//                 document.getElementById(temp).className = "bluePrior";
+//             else if (grid[i][j] == 2)
+//                 document.getElementById(temp).className = "red";
+//             else if (grid[i][j] == 3)
+//                 document.getElementById(temp).className = "bluePriorHalt";
+//             else if (grid[i][j] == 4)
+//                 document.getElementById(temp).className = "redHalt";
+//             else
+//                 document.getElementById(temp).className = "";
+//         }
+//     }
+// }

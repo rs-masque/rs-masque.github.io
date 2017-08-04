@@ -41,3 +41,46 @@
     border: 2px solid darkred;
     background-image: url("images/m-r48.png");
 }
+
+div.left{
+    float: left;
+}
+div.clear{
+    clear: both;
+}
+
+#xspeed table{
+    border: 2px solid black;
+    background-color: gray;
+}
+
+#xspeed table tr td{
+    width:  48px;
+    height: 48px;
+    border: 2px solid darkgray;
+    background-color: lightskyblue;
+}
+
+#yspeed table{
+    border: 2px solid black;
+    background-color: gray;
+}
+
+#yspeed table tr td{
+    width:  48px;
+    height: 48px;
+    border: 2px solid darkgray;
+    background-color: palevioletred;
+}
+
+#aspeed table{
+    border: 2px solid black;
+    background-color: gray;
+}
+
+#aspeed table tr td{
+    width:  48px;
+    height: 48px;
+    border: 2px solid darkgray;
+    background-color: mediumpurple;
+}
