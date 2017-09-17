@@ -22,7 +22,7 @@
                     <td><input name="Prior" type="radio" value="Ver" checked=""> Синие (0) <input id="verPrior" title="Вероятность приоритета красных" value="0.5" size="1"> (1)Красные</td>
                 </tr>
             </table>
-            <input id="Submit_Par" type="button" value="Создать"> <input id="Tick" type="button" value="Шаг"> <input id="Cont" type="button" value="Старт/Стоп"> <input id="timeStep" title="Задержка отображения" value="150" size="3"> (мс)
+            <input id="Submit_Par" type="button" value="Создать"> <input id="Tick" type="button" value="Шаг"> <input id="Show_gr" type="button" value="Показать/скрыть графики."> <input id="Cont" type="button" value="Старт/Стоп"> <input id="timeStep" title="Задержка отображения" value="150" size="3"> (мс)
             <p>
             <div id="yspeed" class="left"></div>
             <div id="aspeed" class="left"></div>
@@ -30,7 +30,15 @@
                 <div id="caf" class="left"></div>
                 <div id="xspeed" class="left"></div>
             </div>
+        <div style="display:none" id="graphs">
+            Скорость синих:<p>
+            <canvas id="grx" width="768" height="100"></canvas><br>
+            Скорость красных:<p>
+            <canvas id="gry" width="768" height="100"></canvas><br>
+            Скорость общая:<p>
+            <canvas id="gra" width="768" height="100"></canvas><br>
             <script src="script.js"></script>
+        </div>
         </form>
     </body>
 </html>

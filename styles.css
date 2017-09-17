@@ -90,3 +90,7 @@ div.clear{
     border: 2px solid darkgray;
     background-color: mediumpurple;
 }
+
+canvas {
+    border: 1px dashed black;
+}
