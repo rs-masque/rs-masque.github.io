@@ -86,10 +86,10 @@ function CellClick(a, b) {
 }
 
 function showCars(grid) {
-    for (var i = 0; i < grid.length; i++) {
+   for (var i = 0; i < grid.length; i++) {
         for (var j = 0; j < grid[0].length; j++) {
             var temp = "cell" + i + "_" + j;
-            if (prior == "Red" || prior == "Blue" || rule == "R240") {
+            if (prior == "Red" || prior == "Blue" || rule == "R184") {
                 if (grid[i][j] == 1)
                     document.getElementById(temp).className = "blue";
                 else if (grid[i][j] == 2)
@@ -141,7 +141,7 @@ function verCar(verPrior) {
     return (Math.random() <= verPrior) ? 1 : 0;
 }
 
-function moveCarsRed184(grid) {
+function moveCarsRed240(grid) {
     for (var i = 0; i < grid.length; i++) {
         for (var j = 0; j < grid[0].length; j++) {
             if (grid[i][j] == 7) {
@@ -297,7 +297,7 @@ function moveCarsRed184(grid) {
     return grid;
 }
 
-function moveCarsBlue184(grid) {
+function moveCarsBlue240(grid) {
     for (var i = 0; i < grid.length; i++) {
         for (var j = 0; j < grid[0].length; j++) {
             if (grid[i][j] == 7) {
@@ -452,7 +452,7 @@ function moveCarsBlue184(grid) {
     return grid;
 }
 
-function moveCarsVer184(grid) {
+function moveCarsVer240(grid) {
     for (var i = 0; i < grid.length; i++) {
         for (var j = 0; j < grid[0].length; j++) {
             if (grid[i][j] == 3 || grid[i][j] == 7) {
@@ -493,7 +493,7 @@ function moveCarsVer184(grid) {
         }
     }
     // Двигаем всё, что движется, помечаем, что подвинули.
-    grid = moveFree184(grid);
+    grid = moveFree240(grid);
     // Разрешаем конфликты. Снимаем метки с тех, что выиграли.
     for (var i = 0; i < grid.length; i++) {
         for (var j = grid[0].length; j >= 0; j--) {
@@ -543,14 +543,14 @@ function moveCarsVer184(grid) {
     for (var i = 0; i < grid.length; i++) {
         for (var j = 0; j < grid[0].length; j++) {
             if (grid[i][j] == 1 || grid[i][j] == 2) {
-                grid = moveFree184(grid);
+                grid = moveFree240(grid);
             }
         }
     }
     return grid;
 }
 
-function moveFree184(grid) {
+function moveFree240(grid) {
     for (var i = 0; i < grid.length; i++) {
         var emptyCell = 0;
         for (; emptyCell < grid[0].length; emptyCell++) {
@@ -640,7 +640,7 @@ function moveFree184(grid) {
     return grid;
 }
 
-function moveCarsRed240(grid) {
+function moveCarsRed184(grid) {
     for (var i = 0; i < grid.length; i++) {
         for (var j = 0; j < grid[0].length; j++) {
             if (grid[i][j] == 7) {
@@ -753,7 +753,7 @@ function moveCarsRed240(grid) {
     return grid;
 }
 
-function moveCarsBlue240(grid) {
+function moveCarsBlue184(grid) {
     for (var i = 0; i < grid.length; i++) {
         for (var j = 0; j < grid[0].length; j++) {
             if (grid[i][j] == 7) {
@@ -866,7 +866,7 @@ function moveCarsBlue240(grid) {
     return grid;
 }
 
-function moveCarsVer240(grid) {
+function moveCarsVer184(grid) {
     for (var i = 0; i < grid.length; i++) {
         for (var j = 0; j < grid[0].length; j++) {
             if (grid[i][j] == 3 || grid[i][j] == 7) {
@@ -920,7 +920,7 @@ function moveCarsVer240(grid) {
         }
     }
     // Двигаем всё, что движется, помечаем, что подвинули.
-    grid = moveFree240(grid);
+    grid = moveFree184(grid);
     // Разрешаем конфликты. Снимаем метки с тех, что выиграли.
     for (var i = 0; i < grid.length; i++) {
         for (var j = grid[0].length; j >= 0; j--) {
@@ -970,7 +970,7 @@ function moveCarsVer240(grid) {
     for (var i = 0; i < grid.length; i++) {
         for (var j = 0; j < grid[0].length; j++) {
             if (grid[i][j] == 1 || grid[i][j] == 2) {
-                grid = moveFree240(grid);
+                grid = moveFree184(grid);
             }
         }
     }
@@ -989,7 +989,7 @@ function moveCarsVer240(grid) {
     return grid;
 }
 
-function moveFree240(grid) {
+function moveFree184(grid) {
     for (var j = 0; j < grid[0].length; j++) {
         var stopCell = 0;
         for (; stopCell < grid.length; stopCell++) {
@@ -1083,6 +1083,11 @@ function moveFree240(grid) {
     }
     return grid;
 }
+
+var x, y, rule, prior, verPrior, car_N;
+var grid;
+var timer = -1;
+var xsp, ysp, xcon, ycon;
 
 function oneStep() {
     prior = $('input[name=Prior]:checked').val();
@@ -1148,11 +1153,6 @@ function oneStep() {
 
 }
 
-var x, y, rule, prior, verPrior, car_N;
-var grid;
-var timer = -1;
-var xsp, ysp, xcon, ycon;
-
 document.getElementById('Submit_Par').onclick = function () {
     x = parseInt($('#Set_X').val());
     y = parseInt($('#Set_Y').val());
@@ -1181,7 +1181,6 @@ document.getElementById('Submit_Par').onclick = function () {
         ycon[i] = 0;
     }
 
-
     grid = randGrid(makeGrid(x, y), car_N);
     drawGrid(x, y);
     drawXSpeed(x);
@@ -1205,6 +1204,13 @@ document.getElementById('Show_gr').onclick = function () {
         document.getElementById("graphs").style.display = '';
     else
         document.getElementById("graphs").style.display = 'none';
+}
+
+document.getElementById('Show_vis').onclick = function () {
+    if (document.getElementById("car_div").style.display == 'none')
+        document.getElementById("car_div").style.display = '';
+    else
+        document.getElementById("car_div").style.display = 'none';
 }
 
 document.getElementById('Tick').onclick = function () {

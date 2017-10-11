@@ -11,7 +11,7 @@
         <p>
         <form name ="form">
             Поле:
-            <input id="Set_X" title="Число клеток по вертикали" value="10" size="3"> x <input id="Set_Y" type="text" title="Число клеток по горизонтали" value="10" size="3">  Количество машин: <input id="Car_N" value="40" size="3">
+            <input id="Set_X" title="Число клеток по вертикали" value="10" size="3"> x <input id="Set_Y" type="text" title="Число клеток по горизонтали" value="10" size="3">  Количество машин: <input id="Car_N" value="40" size="3"> <input id="Cont" type="button" value="Старт/Стоп"> <input id="timeStep" title="Задержка отображения" value="150" size="3"> (мс)
             <br>
             <table id="BMLsw">
                 <tr><td>Правило автомата:</td><td><input name="Rule" type="radio" value="R184" checked="">184<input name="Rule" type="radio" value="R240">240</tr></td>
@@ -22,15 +22,18 @@
                     <td><input name="Prior" type="radio" value="Ver" checked=""> Синие (0) <input id="verPrior" title="Вероятность приоритета красных" value="0.5" size="1"> (1)Красные</td>
                 </tr>
             </table>
-            <input id="Submit_Par" type="button" value="Создать"> <input id="Tick" type="button" value="Шаг"> <input id="Show_gr" type="button" value="Показать/скрыть графики."> <input id="Cont" type="button" value="Старт/Стоп"> <input id="timeStep" title="Задержка отображения" value="150" size="3"> (мс)
+            <input id="Submit_Par" type="button" value="Создать"> <input id="Tick" type="button" value="Шаг"> <input id="Show_gr" type="button" value="Показать/скрыть графики"> <input id="Show_vis" type="button" value="Показать/скрыть поле">
             <p>
+            <div id="car_div">
             <div id="yspeed" class="left"></div>
             <div id="aspeed" class="left"></div>
             <div id="wrapper" class="clear">
                 <div id="caf" class="left"></div>
                 <div id="xspeed" class="left"></div>
             </div>
-        <div style="display:none" id="graphs">
+            </div>
+        <p>
+        <div style="display:none" id="graphs" class="clear">
             Скорость синих:<p>
             <canvas id="grx" width="768" height="100"></canvas><br>
             Скорость красных:<p>
@@ -38,7 +41,7 @@
             Скорость общая:<p>
             <canvas id="gra" width="768" height="100"></canvas><br>
             <script src="script.js"></script>
-        </div>
+        </div></p>
         </form>
     </body>
 </html>
