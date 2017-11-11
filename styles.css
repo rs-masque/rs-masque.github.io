@@ -1,7 +1,7 @@
 #BMLsw {
-    border-spacing: 20px 0px;
+    border-spacing: 20px 0;
     border: 1px solid black;
-    margin: 2px 0px 2px 0px;
+    margin: 2px 0 2px 0;
 }
 
 #caf table{
@@ -10,42 +10,42 @@
 }
 
 #caf table tr td{
-    width:  48px;
-    height: 48px;
+    width:  32px;
+    height: 32px;
     border: 2px solid darkgray;
 }
 
 #caf table tr td.blue{
     border: 2px solid darkgreen;
-    background-image: url("images/b48.png");
+    background-image: url("images/b32.png");
 }
 #caf table tr td.blueHalt{
     border: 2px solid darkred;
-    background-image: url("images/b48.png");
+    background-image: url("images/b32.png");
 }
 #caf table tr td.bluePrior {
     border: 2px solid darkgreen;
-    background-image: url("images/m-b48.png");
+    background-image: url("images/m-b32.png");
 }
 #caf table tr td.bluePriorHalt {
     border: 2px solid darkred;
-    background-image: url("images/m-b48.png");
+    background-image: url("images/m-b32.png");
 }
 #caf table tr td.red{
     border: 2px solid darkgreen;
-    background-image: url("images/r48.png");
+    background-image: url("images/r32.png");
 }
 #caf table tr td.redHalt{
     border: 2px solid darkred;
-    background-image: url("images/r48.png");
+    background-image: url("images/r32.png");
 }
 #caf table tr td.redPrior {
     border: 2px solid darkgreen;
-    background-image: url("images/m-r48.png");
+    background-image: url("images/m-r32.png");
 }
 #caf table tr td.redPriorHalt {
     border: 2px solid darkred;
-    background-image: url("images/m-r48.png");
+    background-image: url("images/m-r32.png");
 }
 
 div.left{
@@ -61,8 +61,8 @@ div.clear{
 }
 
 #xspeed table tr td{
-    width:  48px;
-    height: 48px;
+    width:  32px;
+    height: 32px;
     border: 2px solid darkgray;
     background-color: lightskyblue;
 }
@@ -73,8 +73,8 @@ div.clear{
 }
 
 #yspeed table tr td{
-    width:  48px;
-    height: 48px;
+    width:  32px;
+    height: 32px;
     border: 2px solid darkgray;
     background-color: palevioletred;
 }
@@ -85,8 +85,8 @@ div.clear{
 }
 
 #aspeed table tr td{
-    width:  48px;
-    height: 48px;
+    width:  32px;
+    height: 32px;
     border: 2px solid darkgray;
     background-color: mediumpurple;
 }
