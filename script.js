@@ -8,7 +8,8 @@ function makeGrid(x, y) {
 }
 
 function randGrid(grid, car_N) {
-    for (var i = 0; i < car_N;) {
+    var car_D = Math.round(((grid.length * grid[0].length)/100)*car_N);
+    for (var i = 0; i < car_D;) {
         var tx = Math.floor(Math.random() * (grid.length));
         var ty = Math.floor(Math.random() * (grid[0].length));
         if (grid[tx][ty] === 0) {
@@ -1086,19 +1087,21 @@ function moveFree184(grid) {
 var x, y, rule, prior, verPrior, car_N;
 var grid;
 var timer = -1;
-var xsp, ysp, xcon, ycon;
-var y_sp_arr = new Array(1000);
-var x_sp_arr = new Array(1000);
-var a_sp_arr = new Array(1000);
+var xsp, ysp, xcon, ycon, x_sp, y_sp, a_sp;
+var y_sp_str = "0"; // Строка скоростей по y
+var x_sp_str = "0"; // Строка скоростей по x
+var a_sp_str = "0"; // Строка общих скоростей
+var dl_counter = 0; // Счётчик выгрузок
+var sp_counter = 0; // Счётчик отсечки по полной скорости
+var tm_counter = 0; // Счёткик отсечки по времени
+var tm_lim = 10000; // Лимит отсечки ко премени
 
 function oneStep() {
     prior = $('input[name=Prior]:checked').val();
     rule = $('input[name=Rule]:checked').val();
-    verPrior = parseFloat($('#verPrior').val());
-    if (verPrior > 1) {
-        alert("Вероятность не может быть больше 1.");
-        return;
-    }
+    var vis_trig = true;
+    if ($('#car_div').is(':hidden'))
+        vis_trig = false;
 
     for (var i = 0; i < grid.length; i++) {
         for (var j = 0; j < grid[0].length; j++) {
@@ -1112,61 +1115,98 @@ function oneStep() {
             }
         }
     }
+
     if (rule === "R184") {
         if (prior === "Red") {
             grid = moveCarsRed184(grid);
-            showCars(grid);
+            if (vis_trig)
+                showCars(grid);
         }
         else if (prior === "Blue") {
             grid = moveCarsBlue184(grid);
-            showCars(grid);
+            if ((vis_trig))
+                showCars(grid);
         }
         else {
             grid = moveCarsVer184(grid);
-            showCars(grid);
+            if ((vis_trig))
+                showCars(grid);
         }
     }
     else {
         if (prior === "Red") {
             grid = moveCarsRed240(grid);
-            showCars(grid);
+            if ((vis_trig))
+                showCars(grid);
         }
         else if (prior === "Blue") {
             grid = moveCarsBlue240(grid);
-            showCars(grid);
+            if ((vis_trig))
+                showCars(grid);
         }
         else {
             grid = moveCarsVer240(grid);
-            showCars(grid);
+            if ((vis_trig))
+                showCars(grid);
         }
     }
+
     var xsumsp = 0;
     var xsumcon = 0;
-    for (var i = 0; i < xsp.length; i++) {
+    for (i = 0; i < xsp.length; i++) {
         xsumsp += xsp[i];
         xsumcon += xcon[i];
     }
-    x_sp_arr[gtime] = (xsumsp / xsumcon) ? xsumsp / xsumcon : 0;
     var ysumsp = 0;
     var ysumcon = 0;
     for (i = 0; i < ysp.length; i++) {
         ysumsp += ysp[i];
         ysumcon += ycon[i];
     }
-    y_sp_arr[gtime] = (ysumsp / ysumcon) ? ysumsp / ysumcon : 0;
-    a_sp_arr[gtime] = (x_sp_arr[gtime] + y_sp_arr[gtime]) / 2;
-    drawASpeed();
+    x_sp = (xsumsp / xsumcon) ? xsumsp / xsumcon : 0;
+    y_sp = (ysumsp / ysumcon) ? ysumsp / ysumcon : 0;
+    a_sp = (x_sp + y_sp) / 2;
+    x_sp_str += ','+x_sp;
+    y_sp_str += ','+y_sp;
+    a_sp_str += ','+a_sp;
+
     draw_g();
-    drawXSpeed(x);
+    if (vis_trig) {
+        drawASpeed();
+        drawXSpeed(x);
+        drawYSpeed(y);
+    }
     for (i = 0; i < x; i++) {
         xsp[i] = 0;
         xcon[i] = 0;
     }
-    drawYSpeed(y);
     for (i = 0; i < y; i++) {
         ysp[i] = 0;
         ycon[i] = 0;
     }
+
+    if (a_sp === 1)
+        sp_counter += 1;
+    else
+        sp_counter = 0;
+    tm_counter += 1;
+    if ($('#Save_res_restart').is(':checked') && (a_sp === 0 || sp_counter === x * y || tm_counter === tm_lim) && dl_counter <100)
+    {
+        download('result.txt',x_sp_str+'\n'+y_sp_str+'\n'+a_sp_str);
+        make_new();
+        dl_counter += 1;
+        sp_counter = 0;
+        tm_counter = 0;
+    }
+    else if (dl_counter === 100)
+    {
+        alert("Сбор данных закончен. Обновите страницу и уберите выгруженные файлы.");
+        if (timer > -1) {
+            clearInterval(timer);
+            timer = -1;
+        }
+    }
+
 }
 
 function download(filename, text) {
@@ -1177,23 +1217,25 @@ function download(filename, text) {
     document.body.appendChild(element);
     element.click();
     document.body.removeChild(element);
+    x_sp_str = "0";
+    y_sp_str = "0";
+    a_sp_str = "0";
 }
 
-document.getElementById('Save_res').onclick = function () {
-    download('result.txt',x_sp_arr.toString()+'\n'+y_sp_arr.toString()+'\n'+a_sp_arr.toString());
-}
-document.getElementById('Submit_Par').onclick = function () {
+function make_new() {
     x = parseInt($('#Set_X').val());
     y = parseInt($('#Set_Y').val());
-    car_N = parseInt($('#Car_N').val());
-    if (x * y < car_N) {
-        alert("Количество машин больше количества клеток поля.");
-        return;
+    car_N = parseFloat($('#Car_N').val());
+    if (car_N > 100) {
+        alert("Плотность мащин больше ста.");
+        car_N = 100;
+        ($('#Car_N').val(car_N));
     }
     verPrior = parseFloat($('#verPrior').val());
     if (verPrior > 1) {
         alert("Вероятность не может быть больше 1.");
-        return;
+        verPrior = 1;
+        ($('#verPrior').val(verPrior));
     }
     xsp = new Array(x);
     xcon = new Array(x);
@@ -1226,26 +1268,36 @@ document.getElementById('Submit_Par').onclick = function () {
     gy_context.clearRect(0, 0, gy_canvas.width, gy_canvas.height);
     ga_context.clearRect(0, 0, ga_canvas.width, ga_canvas.height);
     gtime = 0;
-};
+}
 
+document.getElementById('Save_res').onclick = function () {
+    if ($('#Save_res_restart').is(':checked') && dl_counter <100)
+    {
+        download('result.txt',x_sp_str+'\n'+y_sp_str+'\n'+a_sp_str);
+        make_new();
+        dl_counter+=1;
+    }
+    else
+        download('result.txt',x_sp_str+'\n'+y_sp_str+'\n'+a_sp_str);
+};
+document.getElementById('Submit_Par').onclick = function () {
+    make_new();
+};
 document.getElementById('Show_gr').onclick = function () {
     if (document.getElementById("graphs").style.display === 'none')
         document.getElementById("graphs").style.display = '';
     else
         document.getElementById("graphs").style.display = 'none';
 };
-
 document.getElementById('Show_vis').onclick = function () {
     if (document.getElementById("car_div").style.display === 'none')
         document.getElementById("car_div").style.display = '';
     else
         document.getElementById("car_div").style.display = 'none';
 };
-
 document.getElementById('Tick').onclick = function () {
     oneStep();
 };
-
 document.getElementById('Cont').onclick = function () {
     var timeStep = parseInt($('#timeStep').val());
     if (timer === -1) {
@@ -1268,14 +1320,7 @@ function draw_g() {
     // График синих
     var gx_canvas = document.getElementById("grx");
     var gx_context = gx_canvas.getContext("2d");
-    // var xsumsp = 0;
-    // var xsumcon = 0;
-    // for (var i = 0; i < xsp.length; i++) {
-    //     xsumsp += xsp[i];
-    //     xsumcon += xcon[i];
-    // }
-    // var curx = (xsumsp / xsumcon) ? xsumsp / xsumcon : 0;
-    var curx = x_sp_arr[gtime];
+    var curx = x_sp;
     gx_context.beginPath();
     gx_context.moveTo(gtime, 100 - lastx * 100);
     gx_context.lineTo(gtime + 1, 100 - curx * 100);
@@ -1285,14 +1330,7 @@ function draw_g() {
     // График красных
     var gy_canvas = document.getElementById("gry");
     var gy_context = gy_canvas.getContext("2d");
-    // var ysumsp = 0;
-    // var ysumcon = 0;
-    // for (i = 0; i < ysp.length; i++) {
-    //     ysumsp += ysp[i];
-    //     ysumcon += ycon[i];
-    // }
-    // var cury = (ysumsp / ysumcon) ? ysumsp / ysumcon : 0;
-    var cury = y_sp_arr[gtime];
+    var cury = y_sp;
     gy_context.beginPath();
     gy_context.moveTo(gtime, 100 - lasty * 100);
     gy_context.lineTo(gtime + 1, 100 - cury * 100);
@@ -1302,7 +1340,7 @@ function draw_g() {
     // График общий
     var ga_canvas = document.getElementById("gra");
     var ga_context = ga_canvas.getContext("2d");
-    var cura = (curx + cury) / 2;
+    var cura = a_sp;
     ga_context.beginPath();
     ga_context.moveTo(gtime, 100 - lasta * 100);
     ga_context.lineTo(gtime + 1, 100 - cura * 100);
