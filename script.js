@@ -1200,10 +1200,13 @@ function oneStep() {
     }
     else if (dl_counter === 100)
     {
-        alert("Сбор данных закончен. Обновите страницу и уберите выгруженные файлы.");
+        alert("Сбор данных закончен. Уберите выгруженные файлы.");
         if (timer > -1) {
             clearInterval(timer);
             timer = -1;
+            sp_counter = 0;
+            tm_counter = 0;
+            dl_counter = 0;
         }
     }
 
