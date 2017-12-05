@@ -1281,6 +1281,47 @@ function make_new() {
     gtime = 0;
 }
 
+function draw_g() {
+    // График синих
+    var gx_canvas = document.getElementById("grx");
+    var gx_context = gx_canvas.getContext("2d");
+    var curx = x_sp;
+    gx_context.beginPath();
+    gx_context.moveTo(gtime, 100 - lastx * 100);
+    gx_context.lineTo(gtime + 1, 100 - curx * 100);
+    gx_context.strokeStyle = "Blue";
+    gx_context.stroke();
+    lastx = curx;
+    // График красных
+    var gy_canvas = document.getElementById("gry");
+    var gy_context = gy_canvas.getContext("2d");
+    var cury = y_sp;
+    gy_context.beginPath();
+    gy_context.moveTo(gtime, 100 - lasty * 100);
+    gy_context.lineTo(gtime + 1, 100 - cury * 100);
+    gy_context.strokeStyle = "Red";
+    gy_context.stroke();
+    lasty = cury;
+    // График общий
+    var ga_canvas = document.getElementById("gra");
+    var ga_context = ga_canvas.getContext("2d");
+    var cura = a_sp;
+    ga_context.beginPath();
+    ga_context.moveTo(gtime, 100 - lasta * 100);
+    ga_context.lineTo(gtime + 1, 100 - cura * 100);
+    ga_context.strokeStyle = "Black";
+    ga_context.stroke();
+    lasta = cura;
+
+    if (gtime > 1000) {
+        gtime = 0;
+        gx_context.clearRect(0, 0, gx_canvas.width, gx_canvas.height);
+        gy_context.clearRect(0, 0, gy_canvas.width, gy_canvas.height);
+        ga_context.clearRect(0, 0, ga_canvas.width, ga_canvas.height);
+    }
+    else gtime += 1;
+}
+
 document.getElementById('Save_res').onclick = function () {
     if ($('#Save_res_restart').is(':checked') && dl_counter <100)
     {
